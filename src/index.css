@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #050505;
+    color: #e0d8d0;
+    overflow-x: hidden;
+  }
+
+  /* When custom cursor is active on desktop, hide default cursor except for accessible fallbacks */
+  @media (pointer: fine) {
+    body.custom-cursor-enabled,
+    body.custom-cursor-enabled a,
+    body.custom-cursor-enabled button,
+    body.custom-cursor-enabled [role="button"],
+    body.custom-cursor-enabled input,
+    body.custom-cursor-enabled select,
+    body.custom-cursor-enabled textarea {
+      cursor: none !important;
+    }
+  }
+
+  /* Accessibility: Prefers reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    body.custom-cursor-enabled,
+    body.custom-cursor-enabled * {
+      cursor: auto !important;
+    }
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #1c1c1c;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff4e00;
+}
+
+/* Typography styles */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Immersive UI Radial Gradients & Glows */
+.bg-radial-gradient {
+  background: radial-gradient(circle, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
+}
+
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.glow-ember {
+  box-shadow: 0 0 25px -5px rgba(255, 78, 0, 0.45);
+}
+
+.glow-text-ember {
+  text-shadow: 0 0 20px rgba(255, 78, 0, 0.55);
+}
+
+.glow-subtle {
+  box-shadow: 0 0 30px rgba(255, 78, 0, 0.15);
+}
+
+@keyframes cursor-ripple {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.animate-cursor-ripple {
+  animation: cursor-ripple 0.45s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
