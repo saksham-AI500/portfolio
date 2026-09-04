@@ -2,5 +2,7 @@
   "name": "Saksham Gupta Portfolio",
   "description": "Interactive Three.js AI/ML Portfolio of Saksham Gupta featuring custom cursor system, neural 3D galaxy, AI music generation studio, projects, and certifications.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

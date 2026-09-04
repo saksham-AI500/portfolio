@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { MagneticButton } from './MagneticButton';
 import { useCursor } from '../context/CursorContext';
+import { generateClientMusicBlob } from '../utils/clientAudioSynth';
 
 interface MusicTrack {
   audioUrl: string;
@@ -217,8 +218,34 @@ export const MusicStudioModal: React.FC<MusicStudioModalProps> = ({
       }
       setStatusMessage('');
     } catch (err: any) {
-      console.error('Generation failure:', err);
-      setStatusMessage(err?.message || 'Generation failed. Please try again.');
+      console.warn('Server generation unavailable, falling back to browser audio synthesis:', err);
+      try {
+        // Fallback for static hosting like GitHub Pages where /api/music/generate is not present
+        const synth = generateClientMusicBlob({
+          type: trackType,
+          prompt: finalPrompt
+        });
+
+        const fallbackTrack: MusicTrack = {
+          audioUrl: synth.url,
+          blob: synth.blob,
+          title: `${trackType.toUpperCase()} // ${finalPrompt.slice(0, 24)} (Browser Synth)`,
+          type: trackType,
+          prompt: finalPrompt,
+          source: 'procedural',
+          generatedAt: new Date().toISOString()
+        };
+
+        setCurrentTrack(fallbackTrack);
+        setIsPlaying(true);
+        if (audioRef.current) {
+          audioRef.current.src = synth.url;
+          audioRef.current.play().catch(() => {});
+        }
+        setStatusMessage('Synthesized via client audio engine (Static Mode).');
+      } catch (fallbackErr: any) {
+        setStatusMessage(err?.message || 'Generation failed. Please try again.');
+      }
     } finally {
       setIsGenerating(false);
     }
